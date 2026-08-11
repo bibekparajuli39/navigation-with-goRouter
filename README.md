@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+
 # nav_passdata
 
 A new Flutter project.
@@ -6,6 +7,7 @@ A new Flutter project.
 ## Getting Started
 
 This project is a starting point for a Flutter application.
+This is naviagtion using GoRouter and passes data from one screen to another using GoRouter with keyword "extra" that built inside GoRoute
 
 A few resources to get you started if this is your first Flutter project:
 
@@ -17,5 +19,7 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 =======
+
 # navigation-with-goRouter
->>>>>>> 91869dc13f0ed98746dfb8c908e773ba3b8cf85f
+
+> > > > > > > 91869dc13f0ed98746dfb8c908e773ba3b8cf85f
