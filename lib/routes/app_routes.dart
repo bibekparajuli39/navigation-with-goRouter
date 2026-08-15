@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nav_passdata/routes/routes.dart';
-import 'package:nav_passdata/screens/first_screen.dart';
+import 'package:nav_passdata/screens/product_screen.dart';
 import 'package:nav_passdata/screens/home_screen.dart';
 import 'package:nav_passdata/screens/login_screen.dart';
 import 'package:nav_passdata/screens/second_screen.dart';
@@ -25,10 +25,10 @@ class AppRoutes {
             },
           ),
           GoRoute(
-            path: Routes.firstScreen,
+            path: Routes.productScreen,
             builder: (BuildContext context, GoRouterState state) {
               String isFirst = state.extra.toString();
-              return FirstScreen(first: isFirst);
+              return ProductScreen(first: isFirst);
             },
           ),
           GoRoute(
