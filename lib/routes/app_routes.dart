@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nav_passdata/model/product/auth/user_login.dart';
 import 'package:nav_passdata/routes/routes.dart';
+import 'package:nav_passdata/screens/broadcast_stream.dart';
 import 'package:nav_passdata/screens/product_screen.dart';
 import 'package:nav_passdata/screens/home_screen.dart';
 import 'package:nav_passdata/screens/login_screen.dart';
-import 'package:nav_passdata/screens/second_screen.dart';
+import 'package:nav_passdata/screens/rx_stream.dart';
+import 'package:nav_passdata/screens/stream_builder.dart';
+import 'package:nav_passdata/screens/stream_screen.dart';
+import 'package:nav_passdata/screens/userdetail_screen.dart';
 
 class AppRoutes {
   /// The route configuration
   static final GoRouter router = GoRouter(
     routes: <RouteBase>[
       GoRoute(
-        path: Routes.loginScreen,
+        path: Routes.secondScreen,
+
         builder: (BuildContext context, GoRouterState state) {
-          return const LoginScreen();
+          String issec = state.extra.toString();
+          return RxStream();
+          // return SecondScreen(isSec: issec);
         },
         routes: <RouteBase>[
           GoRoute(
@@ -32,11 +40,12 @@ class AppRoutes {
             },
           ),
           GoRoute(
-            path: Routes.secondScreen,
-
+            path: Routes.loginScreen,
             builder: (BuildContext context, GoRouterState state) {
-              String issec = state.extra.toString();
-              return SecondScreen(isSec: issec);
+              final isUser = state.extra as UserLogin;
+
+              print(isUser);
+              return LoginScreen(userLogin: isUser);
             },
           ),
         ],

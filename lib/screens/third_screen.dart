@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nav_passdata/routes/routes.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({super.key});
@@ -16,7 +17,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
       body: Center(
         child: InkWell(
           onTap: () {
-            context.go('abc');
+            context.go(Routes.productScreen);
           },
           child: Text('Go to HomeScreen '),
         ),

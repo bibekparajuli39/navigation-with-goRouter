@@ -1,7 +1,7 @@
 class Routes {
-  static final loginScreen = '/';
+  static final loginScreen = '/login';
   static final homeScreen = '/home';
   static final productScreen = '/first';
-  static final secondScreen = '/second';
+  static final secondScreen = '/';
   static final thirdScreen = '/third';
 }

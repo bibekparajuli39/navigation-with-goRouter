@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nav_passdata/model/product/product.dart';
+import 'package:nav_passdata/network/api_end_point.dart';
 import 'package:nav_passdata/routes/routes.dart';
+import 'package:nav_passdata/services/api_services.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key, this.first});
@@ -15,7 +17,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   List<Product> product = [];
   bool isLoading = false;
-  final Dio dio = Dio();
+  // final Dio dio = Dio();
 
   @override
   void initState() {
@@ -26,7 +28,8 @@ class _ProductScreenState extends State<ProductScreen> {
   Future getProduct() async {
     try {
       isLoading = true;
-      final response = await dio.get("https://fakestoreapi.com/products");
+      final response = await ApiService().get(ApiEndPoint.products);
+      // final response = await dio.get("https://fakestoreapi.com/products");
       print("Api response ${response.statusCode}");
       final List data = response.data;
       // json we need to convert it Dart
@@ -34,16 +37,18 @@ class _ProductScreenState extends State<ProductScreen> {
       print(product[0].id);
     } catch (e) {
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (context.mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('First Sceen')),
+      appBar: AppBar(title: Text('Product Screen')),
       body: Center(
         child: InkWell(
           onTap: () {
@@ -155,9 +160,5 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
       ),
     );
-  }
-
-  Future login() async {
-    final response = await dio.post("");
   }
 }

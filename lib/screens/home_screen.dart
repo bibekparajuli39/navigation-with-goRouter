@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nav_passdata/model/product/product.dart';
+import 'package:nav_passdata/network/api_end_point.dart';
 import 'package:nav_passdata/routes/routes.dart';
+import 'package:nav_passdata/services/api_services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.islogin});
@@ -13,14 +15,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController idControllor = TextEditingController();
   TextEditingController titleControllor = TextEditingController();
   TextEditingController priceControllor = TextEditingController();
   TextEditingController descriptionControllor = TextEditingController();
   TextEditingController categoryControllor = TextEditingController();
   TextEditingController imageControllor = TextEditingController();
+  bool isloading = false;
+  bool isload = false;
 
   final Dio dio = Dio();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    titleControllor.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,15 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: .start,
                 children: [
                   Text('Fill the product'),
-                  TextFormField(
-                    controller: idControllor,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(22),
-                      ),
-                      hintText: "id",
-                    ),
-                  ),
+
                   TextFormField(
                     controller: titleControllor,
                     decoration: InputDecoration(
@@ -100,21 +102,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        int id = int.parse(idControllor.text);
-                        var title = titleControllor.text.trim;
-                        var price = priceControllor.text.trim;
-                        var description = descriptionControllor.text.trim;
-                        var category = categoryControllor.text.trim;
-                        var image = imageControllor.text.trim;
+                      onPressed: () async {
+                        var title = titleControllor.text.trim();
+                        var price = double.parse(priceControllor.text.trim());
+                        var description = descriptionControllor.text.trim();
+                        var category = categoryControllor.text.trim();
+                        var image = imageControllor.text.trim();
                         var productDetails = Product(
-                          id: id,
-                          title: title.toString(),
+                          title: title,
+                          price: price,
+                          description: description,
+                          category: category,
+                          image: image,
                         );
 
-                        product(productDetails);
+                        await product(productDetails);
                       },
-                      child: Text("Submit"),
+                      child: isloading
+                          ? CircularProgressIndicator()
+                          : Text("Submit"),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await userDelete(2);
+                      },
+                      child: isload
+                          ? CircularProgressIndicator()
+                          : Text("Delete User"),
                     ),
                   ),
                 ],
@@ -126,12 +142,42 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> userDelete(int id) async {
+    try {
+      isload = true;
+      setState(() {});
+      final response = await dio.delete("https://fakestoreapi.com/users/id");
+      final data = response.data;
+      print(data);
+      if (response.statusCode == 200) {
+        print(data);
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      isload = false;
+      setState(() {});
+    }
+  }
+
   Future product(Product productDetails) async {
-    final response = await dio.post(
-      "https://fakestoreapi.com/products",
-      data: productDetails.toJson(),
-    );
-    final data = response.statusCode;
-    print(data);
+    try {
+      isloading = true;
+      setState(() {});
+
+      // final response = await dio.post(
+      //   "https://fakestoreapi.com/products",
+      //   data: productDetails.toJson(),
+      // );
+      final response = await ApiService().post(ApiEndPoint.products);
+      final data = response.statusCode;
+      final printdat = response.data;
+      print(data);
+      print(printdat);
+    } catch (e) {
+    } finally {
+      isloading = false;
+      setState(() {});
+    }
   }
 }
